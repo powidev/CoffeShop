@@ -15,11 +15,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding=ActivitySplashBinding.inflate(layoutInflater)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.startBtn.setOnClickListener{
-        startActivity(Intent(this, MainActivity::class.java))
+        binding.startBtn.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choice_your_nfavorite_coffee">Escoge tu\ncafé preferido</string>
+    <string name="the_best_grain_the_finest_roast_nthe_powerfull_flavor">Los mejores, selectos\ny poderozos granos de café</string>
+    <string name="get_started">Empezemos</string>
+    <string name="search_anything">Busca cualquier cosa…</string>
+    <string name="category">Categorias</string>
+    <string name="popular_coffees">Cafés mas populares</string>
+    <string name="see_all">Ver todos</string>
+    <string name="language">Idioma</string>
+    <string name="language_icon">Icono de Idioma</string>
+    <string name="back">Regresar</string>
+    <string name="settings">Configuración</string>
+</resources>
