@@ -216,7 +216,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Explorer"
+                        android:text="@string/explorer"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
@@ -241,7 +241,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Cart"
+                        android:text="@string/cart"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
@@ -265,7 +265,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Explorer"
+                        android:text="@string/explorer"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
@@ -289,7 +289,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="My Order"
+                        android:text="@string/my_order"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
@@ -314,7 +314,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Profile"
+                        android:text="@string/profile"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="10sp" />

@@ -11,4 +11,22 @@
     <string name="language_icon">Icono de Idioma</string>
     <string name="back">Regresar</string>
     <string name="settings">Configuración</string>
+    <string name="cart">Carrito</string>
+    <string name="enter_your_discount_code">Ingresa tu cupón de descuento</string>
+    <string name="apply">Aplicar</string>
+    <string name="total">Total</string>
+    <string name="total_tax">IGV</string>
+    <string name="delivery">Delivery</string>
+    <string name="subtotal">SubTotal</string>
+    <string name="proceed_to_checkout">Proceeder con el pago</string>
+    <string name="coffee_size">Tamaño del Café</string>
+    <string name="small">Pequeño</string>
+    <string name="medium">Mediano</string>
+    <string name="large">Grande</string>
+    <string name="quantity">Cantidad</string>
+    <string name="description_title">Descripcion</string>
+    <string name="add_to_cart">Añadir al carrito</string>
+    <string name="profile">Perfil</string>
+    <string name="my_order">Mi Orden</string>
+    <string name="explorer">Explorar</string>
 </resources>
