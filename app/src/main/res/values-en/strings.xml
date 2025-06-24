@@ -29,4 +29,7 @@
     <string name="profile">Profile</string>
     <string name="my_order">My Order</string>
     <string name="explorer">Explorer</string>
+    <string name="choose_your_payment_method">Choose your\npayment method</string>
+    <string name="cash">Cash</string>
+    <string name="confirm">Confirm</string>
 </resources>

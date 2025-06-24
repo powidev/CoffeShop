@@ -1,5 +1,6 @@
 package com.powidev.coffeshop.Activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ class CartActivity : AppCompatActivity() {
         calculateCart()
         setVariable()
         initCartList()
+        initPaymentActivity()
     }
 
     private fun initCartList() {
@@ -60,6 +62,12 @@ class CartActivity : AppCompatActivity() {
             taxTxt.text="$$tax"
             deliveryTxt.text="$$delivery"
             totalTxt.text="$$total"
+        }
+    }
+
+    private fun initPaymentActivity() {
+        binding.button3.setOnClickListener {
+            startActivity(Intent(this, PaymentActivity::class.java))
         }
     }
 }

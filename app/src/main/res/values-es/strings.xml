@@ -29,4 +29,7 @@
     <string name="profile">Perfil</string>
     <string name="my_order">Mi Orden</string>
     <string name="explorer">Explorar</string>
+    <string name="choose_your_payment_method">Escoge tu\nmétodo de pago</string>
+    <string name="cash">Efectivo</string>
+    <string name="confirm">Confirmar</string>
 </resources>
