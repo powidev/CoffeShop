@@ -32,4 +32,6 @@
     <string name="choose_your_payment_method">Escoge tu\nmétodo de pago</string>
     <string name="cash">Efectivo</string>
     <string name="confirm">Confirmar</string>
+    <string name="payment_type">Tipo de Pago</string>
+    <string name="credit_debit_card">Tarjeta de crédito\no débito</string>
 </resources>

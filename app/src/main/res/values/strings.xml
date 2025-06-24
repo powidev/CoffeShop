@@ -37,4 +37,8 @@
     <string name="cash_icon" translatable="false" >Cash Icon</string>
     <string name="cash">Cash</string>
     <string name="confirm">Confirm</string>
+    <string name="payment_type">Payment type</string>
+    <string name="yape" translatable="false">Yape</string>
+    <string name="paypal" translatable="false">PayPal</string>
+    <string name="credit_debit_card">Credit / Debit card</string>
 </resources>

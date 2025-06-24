@@ -32,4 +32,6 @@
     <string name="choose_your_payment_method">Choose your\npayment method</string>
     <string name="cash">Cash</string>
     <string name="confirm">Confirm</string>
+    <string name="payment_type">Payment type</string>
+    <string name="credit_debit_card">Credit / Debit card</string>
 </resources>
