@@ -43,4 +43,8 @@
     <string name="credit_debit_card">Credit / Debit\ncard</string>
     <string name="coffee">coffee</string>
     <string name="price">price</string>
+    <string name="orders">Orders</string>
+    <string name="orderid">OrderId:</string>
+    <string name="total_price">Total price: $</string>
+    <string name="date">Date:</string>
 </resources>
