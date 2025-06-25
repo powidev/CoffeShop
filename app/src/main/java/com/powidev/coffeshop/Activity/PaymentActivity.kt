@@ -27,7 +27,6 @@ class PaymentActivity : AppCompatActivity() {
 
         setVariable()
         loadPaymentOptions()
-//        listenForSelectedPayment()
     }
 
     private fun setVariable() {
@@ -48,17 +47,5 @@ class PaymentActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         paymentAdapter = PaymentAdapter(paymentOptions)
         recyclerView.adapter = paymentAdapter
-    }
-
-    private fun listenForSelectedPayment() {
-        val paymentCard: MaterialCardView = bindingCardView.paymentCard
-
-        paymentCard.setOnCheckedChangeListener { card, isChecked ->
-            if(isChecked) {
-                paymentCard.strokeWidth = 5
-            } else {
-                paymentCard.strokeWidth = 0
-            }
-        }
     }
 }
