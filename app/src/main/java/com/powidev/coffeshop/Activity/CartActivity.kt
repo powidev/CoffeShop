@@ -5,12 +5,11 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.powidev.coffeshop.Activity.payment.PaymentActivity
 import com.powidev.coffeshop.Adapter.CartAdapter
 import com.powidev.coffeshop.Helper.ChangeNumberItemsListener
 import com.powidev.coffeshop.Helper.ManagmentCart
 import com.powidev.coffeshop.databinding.ActivityCartBinding
-import com.powidev.coffeshop.databinding.ActivityMainBinding
 
 class CartActivity : AppCompatActivity() {
     lateinit var binding: ActivityCartBinding

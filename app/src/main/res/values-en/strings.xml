@@ -34,4 +34,6 @@
     <string name="confirm">Confirm</string>
     <string name="payment_type">Payment type</string>
     <string name="credit_debit_card">Credit / Debit\ncard</string>
+    <string name="coffee">Coffee</string>
+    <string name="price">Price</string>
 </resources>

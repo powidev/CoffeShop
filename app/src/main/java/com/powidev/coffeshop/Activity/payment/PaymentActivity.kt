@@ -1,27 +1,34 @@
-package com.powidev.coffeshop.Activity
+package com.powidev.coffeshop.Activity.payment
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.powidev.coffeshop.Activity.MainActivity
 import com.powidev.coffeshop.Adapter.PaymentAdapter
 import com.powidev.coffeshop.Domain.PaymentModel
+import com.powidev.coffeshop.Helper.LoadingDialogFragment
 import com.powidev.coffeshop.R
 import com.powidev.coffeshop.databinding.ActivityPaymentBinding
-import androidx.core.content.edit
 
 class PaymentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaymentBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var paymentAdapter: PaymentAdapter
+    private lateinit var preferences: SharedPreferences
+    private val loadingDialogFragment by lazy { LoadingDialogFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentBinding.inflate(layoutInflater)
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
         setContentView(binding.root)
         enableEdgeToEdge()
 
@@ -47,7 +54,6 @@ class PaymentActivity : AppCompatActivity() {
         recyclerView = binding.recyclerPayments
         recyclerView.layoutManager = LinearLayoutManager(this)
         paymentAdapter = PaymentAdapter(paymentOptions) { paymentModel, position ->
-            val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
             preferences.edit { putInt("payment_preference", position) }
         }
         recyclerView.adapter = paymentAdapter
@@ -55,29 +61,35 @@ class PaymentActivity : AppCompatActivity() {
 
     private fun handlePaymentMethod() {
         binding.confirmButton.setOnClickListener {
-            val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
             val selectedPaymentPosition = preferences.getInt("payment_preference", -1)
 
-            if (selectedPaymentPosition == -1) {
-                Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT).show()
-            }
-
-            //TODO: Optimize code (There is a lot of repetition) and implement payment activities
-            if (selectedPaymentPosition == 0) {
-                Toast.makeText(this, "Cash payment selected", Toast.LENGTH_SHORT).show()
-                preferences.edit { putInt("payment_preference", -1) }
-            } else if (selectedPaymentPosition == 1) {
-                Toast.makeText(this, "Yape payment selected", Toast.LENGTH_SHORT).show()
-                preferences.edit { putInt("payment_preference", -1) }
-            } else if (selectedPaymentPosition == 2) {
-                Toast.makeText(this, "PayPal payment selected", Toast.LENGTH_SHORT).show()
-                preferences.edit { putInt("payment_preference", -1) }
-            } else if (selectedPaymentPosition == 3) {
-                Toast.makeText(this, "Credit/Debit Card payment selected", Toast.LENGTH_SHORT)
+            when (selectedPaymentPosition) {
+                0 -> handleCashPayment()
+                1 -> Toast.makeText(this, "Yape payment selected", Toast.LENGTH_SHORT).show()
+                2 -> Toast.makeText(this, "PayPal payment selected", Toast.LENGTH_SHORT).show()
+                3 -> Toast.makeText(this, "Credit/Debit Card payment selected", Toast.LENGTH_SHORT)
                     .show()
-                preferences.edit { putInt("payment_preference", -1) }
+
+                else -> Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT)
+                    .show()
             }
 
+            //Reset to unselected for future purchases
+            preferences.edit { putInt("payment_preference", -1) }
         }
+    }
+
+    private fun handleCashPayment() {
+        val cashPayment = CashPayment(this)
+        loadingDialogFragment.show(supportFragmentManager, "loader")
+
+        Handler(mainLooper).postDelayed({
+            if (loadingDialogFragment.isAdded) {
+                loadingDialogFragment.dismissAllowingStateLoss()
+            }
+            cashPayment.saveOrder()
+            startActivity(Intent(this, MainActivity::class.java))
+        }, 1500)
+
     }
 }
