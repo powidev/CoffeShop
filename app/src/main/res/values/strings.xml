@@ -40,5 +40,5 @@
     <string name="payment_type">Payment type</string>
     <string name="yape" translatable="false">Yape</string>
     <string name="paypal" translatable="false">PayPal</string>
-    <string name="credit_debit_card">Credit / Debit card</string>
+    <string name="credit_debit_card">Credit / Debit\ncard</string>
 </resources>

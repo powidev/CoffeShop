@@ -11,8 +11,10 @@ import com.google.android.material.card.MaterialCardView
 import com.powidev.coffeshop.Domain.PaymentModel
 import com.powidev.coffeshop.R
 
-class PaymentAdapter(private val list: List<PaymentModel>) :
-    RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder>() {
+class PaymentAdapter(
+    private val list: List<PaymentModel>,
+    private val onItemClicked: (PaymentModel, Int) -> Unit
+) : RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder>() {
 
     private var selectedPosition = -1
 
@@ -45,6 +47,8 @@ class PaymentAdapter(private val list: List<PaymentModel>) :
             if (previousSelectedPosition != -1 && previousSelectedPosition != selectedPosition) {
                 notifyItemChanged(previousSelectedPosition)
             }
+
+            onItemClicked(payment, position)
 
             currentCard.isChecked = true
             currentCard.strokeWidth = 5
