@@ -80,7 +80,7 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun handleCashPayment() {
-        val cashPayment = CashPayment(this)
+        val cashPayment = CashPaymentActivity(this)
         loadingDialogFragment.show(supportFragmentManager, "loader")
 
         Handler(mainLooper).postDelayed({

@@ -37,7 +37,8 @@
     <string name="coffee">Café</string>
     <string name="price">Precio</string>
     <string name="orders">Mis pedidos</string>
-    <string name="orderid">Pedido #</string>
+    <string name="order_id">Pedido #</string>
     <string name="total_price">Precio Total: S/</string>
     <string name="date">Fecha:</string>
+    <string name="something_went_wrong">Ocurrió un error, intentelo de nuevo</string>
 </resources>
