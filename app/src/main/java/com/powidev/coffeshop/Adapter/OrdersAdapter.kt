@@ -1,10 +1,13 @@
 package com.powidev.coffeshop.Adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
+import com.powidev.coffeshop.Activity.OrderDetailsActivity
 import com.powidev.coffeshop.Domain.OrderModel
 import com.powidev.coffeshop.R
 
@@ -16,6 +19,7 @@ class OrdersAdapter(
         val orderId: TextView = itemView.findViewById(R.id.textOrderId)
         val orderDate: TextView = itemView.findViewById(R.id.textOrderDate)
         val orderPrice: TextView = itemView.findViewById(R.id.textOrderPrice)
+        val card: MaterialCardView = itemView.findViewById(R.id.orderCard)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrdersViewHolder {
@@ -33,6 +37,13 @@ class OrdersAdapter(
         holder.orderId.text =  orderIdFmt
         holder.orderDate.text = orderDateFmt
         holder.orderPrice.text = orderPriceFmt
+
+        holder.card.setOnClickListener {
+            val intent = Intent(holder.itemView.context, OrderDetailsActivity::class.java)
+            intent.putExtra("orderID", order.orderID)
+            holder.itemView.context.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount(): Int {

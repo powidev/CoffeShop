@@ -39,6 +39,9 @@
     <string name="orders">Mis pedidos</string>
     <string name="order_id">Pedido #</string>
     <string name="total_price">Precio Total: S/</string>
-    <string name="date">Fecha:</string>
+    <string name="date">"Fecha: "</string>
     <string name="something_went_wrong">Ocurrió un error, intentelo de nuevo</string>
+    <string name="order_detail">Detalles del pedido</string>
+    <string name="gross_amount">"Monto neto: "</string>
+    <string name="payment_type_plus_sign">"Tipo de pago: "</string>
 </resources>

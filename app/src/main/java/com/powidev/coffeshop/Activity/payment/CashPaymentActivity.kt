@@ -26,7 +26,7 @@ class CashPaymentActivity(val context: Context) {
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = format.format(Date())
 
-        val order = OrderModel(date = currentDate, totalPrice = managementCart.getTotalFee())
+        val order = OrderModel(date = currentDate, totalPrice = managementCart.getCalculatedFee(), grossPrice = managementCart.getTotalFee(), paymentType = PaymentType.CASH)
         val orderId = orderDBHelper.insertOrder(order)
 
         if(orderId.toInt() == -1) {
@@ -35,7 +35,7 @@ class CashPaymentActivity(val context: Context) {
         }
 
         managementCart.getListCart().forEach {
-            val order = OrderDetailModel(it.title, it.price, it.numberInCart, PaymentType.CASH, orderId.toInt())
+            val order = OrderDetailModel(it.title, it.price, it.numberInCart, orderId.toInt())
             orderDetailDBHelper.insertOrder(order)
         }
         managementCart.clearListCart()

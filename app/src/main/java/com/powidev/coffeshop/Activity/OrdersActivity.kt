@@ -18,7 +18,6 @@ class OrdersActivity : AppCompatActivity() {
     private lateinit var ordersAdapter: OrdersAdapter
     private lateinit var preferences: SharedPreferences
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrderBinding.inflate(layoutInflater)
@@ -27,6 +26,7 @@ class OrdersActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         loadPlacedOrders()
+        setVariable()
     }
 
     private fun loadPlacedOrders() {
@@ -37,5 +37,9 @@ class OrdersActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         ordersAdapter = OrdersAdapter(listOrders)
         recyclerView.adapter = ordersAdapter
+    }
+
+    private fun setVariable() {
+        binding.backBtn.setOnClickListener { finish() }
     }
 }

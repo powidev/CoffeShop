@@ -5,6 +5,7 @@ import android.widget.Toast
 import com.powidev.coffeshop.Helper.ChangeNumberItemsListener
 import com.powidev.coffeshop.Domain.ItemsModel
 import com.powidev.coffeshop.Helper.TinyDB
+import kotlin.math.roundToInt
 
 
 class ManagmentCart(val context: Context) {
@@ -59,6 +60,19 @@ class ManagmentCart(val context: Context) {
             fee += item.price * item.numberInCart
         }
         return fee
+    }
+    
+    fun getCalculatedFee(): Double {
+        val listItem = getListCart()
+        var fee = 0.0
+        var taxAmount = 0.02
+
+        for (item in listItem) {
+            fee += item.price * item.numberInCart
+        }
+
+        val taxedFee = (fee * taxAmount * 100.0).roundToInt() / 100.0
+        return ((fee + taxedFee + 15) * 100.0).roundToInt() / 100.0
     }
 
     fun clearListCart() {

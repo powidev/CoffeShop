@@ -5,11 +5,10 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.powidev.coffeshop.Domain.OrderDetailModel
-import com.powidev.coffeshop.Domain.PaymentType
 
 class OrderDetailDBHelper(context: Context) : SQLiteOpenHelper(
-    context, "orders.db",
-    null, 3
+    context, "orderDetail.db",
+    null, 2
 ) {
     override fun onCreate(db: SQLiteDatabase) {
         val createTable = """
@@ -17,7 +16,6 @@ class OrderDetailDBHelper(context: Context) : SQLiteOpenHelper(
             title TEXT,
             price REAL,
             numberInCart INTEGER,
-            paymentType TEXT,
             orderId INTEGER
         )
         """
@@ -35,7 +33,6 @@ class OrderDetailDBHelper(context: Context) : SQLiteOpenHelper(
             put("title", order.title)
             put("price", order.price)
             put("numberInCart", order.numberInCart)
-            put("paymentType", order.paymentType.toString())
             put("orderId", order.orderId)
         }
         return db.insert("orderDetail", null, values)
@@ -50,8 +47,7 @@ class OrderDetailDBHelper(context: Context) : SQLiteOpenHelper(
                 title = cursor.getString(0),
                 price = cursor.getDouble(1),
                 numberInCart = cursor.getInt(2),
-                paymentType = PaymentType.valueOf(cursor.getString(3)),
-                orderId = cursor.getInt(4)
+                orderId = cursor.getInt(3)
             )
             list.add(orders)
         }

@@ -37,8 +37,11 @@
     <string name="coffee">Coffee</string>
     <string name="price">Price</string>
     <string name="orders">Orders</string>
-    <string name="order_id">Order Id:</string>
+    <string name="order_id">Order Id #</string>
     <string name="total_price">Total price: $</string>
-    <string name="date">Date:</string>
+    <string name="date">"Date: "</string>
     <string name="something_went_wrong">Something went wrong, try again</string>
+    <string name="order_detail">Order details</string>
+    <string name="gross_amount">"Gross amount: "</string>
+    <string name="payment_type_plus_sign">"Payment type: "</string>
 </resources>
