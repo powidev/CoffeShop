@@ -54,4 +54,8 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.gson)
     implementation(libs.lottie)
+
+    implementation(libs.fast.android.networking.android.networking)
+    implementation(libs.okhttp)
+    implementation(libs.paypal.web.payments)
 }

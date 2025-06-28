@@ -55,4 +55,10 @@
     <string name="delivery_plus_sign" translatable="false">"Delivery: "</string>
     <string name="total_plus_sign" translatable="false">"Total: "</string>
     <string name="payment_type_plus_sign">"Payment type: "</string>
+    <string name="paypal_payment_in_progress">Paypal Payment in progress…</string>
+    <string name="payment_cancelled">The payment was cancelled</string>
+    <string name="could_not_capture_order">Couldn\'t capture PayPal\norder details</string>
+    <string name="payment_successful">Payment successful, enjoy!</string>
+    <string name="paypal_loaded_succesfully">Paypal was loaded successfully!</string>
+    <string name="paypal_could_not_load">There was a problem while\ntrying to load PayPal</string>
 </resources>
