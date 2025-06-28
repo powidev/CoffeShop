@@ -48,4 +48,6 @@
     <string name="payment_cancelled">El pago fue cancelado</string>
     <string name="could_not_capture_order">No se pudieron obtener\nlos detalles del pedido de PayPal</string>
     <string name="payment_successful">Pago correcto, disfruta!</string>
+    <string name="paypal_loaded_succesfully">Paypal se cargó correctamente!</string>
+    <string name="paypal_could_not_load">Ocurrió un problema\nal intentar cargar PayPal</string>
 </resources>

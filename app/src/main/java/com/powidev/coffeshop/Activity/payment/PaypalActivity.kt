@@ -2,6 +2,7 @@ package com.powidev.coffeshop.Activity.payment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
@@ -23,6 +24,7 @@ import com.powidev.coffeshop.Activity.MainActivity
 import com.powidev.coffeshop.Domain.OrderDetailModel
 import com.powidev.coffeshop.Domain.OrderModel
 import com.powidev.coffeshop.Domain.PaymentType
+import com.powidev.coffeshop.Helper.LoadingDialogFragment
 import com.powidev.coffeshop.Helper.ManagmentCart
 import com.powidev.coffeshop.Helper.OrderDBHelper
 import com.powidev.coffeshop.Helper.OrderDetailDBHelper
@@ -37,6 +39,7 @@ import java.util.UUID
 
 class PaypalActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaypalBinding
+    private val loadingDialogFragment by lazy { LoadingDialogFragment() }
 
     //Paypal
     private lateinit var clientID: String
@@ -70,9 +73,14 @@ class PaypalActivity : AppCompatActivity() {
             fetchAccessToken()
         }
 
-        binding.paypalpay.setOnClickListener {
+        loadingDialogFragment.show(supportFragmentManager, "loader")
+
+        Handler(mainLooper).postDelayed({
+            if (loadingDialogFragment.isAdded) {
+                loadingDialogFragment.dismissAllowingStateLoss()
+            }
             startPayment()
-        }
+        }, 1500)
     }
 
     private fun readPaypalSecrets(): Boolean {
@@ -105,14 +113,18 @@ class PaypalActivity : AppCompatActivity() {
 
                     Toast.makeText(
                         this@PaypalActivity,
-                        "Access Token Fetched!",
+                        resources.getString(R.string.paypal_loaded_succesfully),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
 
                 override fun onError(error: ANError) {
                     Log.d("debug", error.errorBody)
-                    Toast.makeText(this@PaypalActivity, "Error Occurred!", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@PaypalActivity,
+                        resources.getString(R.string.paypal_could_not_load),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             })
@@ -215,11 +227,19 @@ class PaypalActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         Log.d("debug", "onNewIntent: $intent")
-        if(intent.data!!.getQueryParameter("opType") == "payment") {
+        if (intent.data!!.getQueryParameter("opType") == "payment") {
             captureOrder(orderId)
-            Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.payment_successful),
+                Toast.LENGTH_SHORT
+            ).show()
         } else if (intent.data!!.getQueryParameter("opType") == "cancel") {
-            Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.payment_cancelled),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
