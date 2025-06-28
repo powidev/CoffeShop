@@ -2,6 +2,7 @@ package com.powidev.coffeshop.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import com.powidev.coffeshop.Activity.payment.PaymentActivity
 import com.powidev.coffeshop.Adapter.CartAdapter
 import com.powidev.coffeshop.Helper.ChangeNumberItemsListener
 import com.powidev.coffeshop.Helper.ManagmentCart
+import com.powidev.coffeshop.R
 import com.powidev.coffeshop.databinding.ActivityCartBinding
 
 class CartActivity : AppCompatActivity() {
@@ -66,7 +68,11 @@ class CartActivity : AppCompatActivity() {
 
     private fun initPaymentActivity() {
         binding.button3.setOnClickListener {
-            startActivity(Intent(this, PaymentActivity::class.java))
+            if(managmentCart.getTotalFee() == 0.0) {
+                Toast.makeText(this, resources.getString(R.string.empty_cart), Toast.LENGTH_SHORT).show()
+            } else {
+                startActivity(Intent(this, PaymentActivity::class.java))
+            }
         }
     }
 }

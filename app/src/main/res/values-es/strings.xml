@@ -54,4 +54,5 @@
     <string name="expiration_date">Fecha de Expiración</string>
     <string name="required">Campo requerido</string>
     <string name="coming_soon">Pronto!</string>
+    <string name="empty_cart">El carrito está vacío!</string>
 </resources>
