@@ -8,4 +8,7 @@
     <color name="darkGrey">#4E4E4E</color>
     <color name="grey">#8D8D8D</color>
     <color name="darkBrown">#220C01</color>
+
+    <!-- Añadido -->
+    <color name="blue">#2196F3</color>
 </resources>

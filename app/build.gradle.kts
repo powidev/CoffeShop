@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("org.jetbrains.kotlin.kapt")
+
+
 }
 
 android {
@@ -58,4 +61,9 @@ dependencies {
     implementation(libs.fast.android.networking.android.networking)
     implementation(libs.okhttp)
     implementation(libs.paypal.web.payments)
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 }
