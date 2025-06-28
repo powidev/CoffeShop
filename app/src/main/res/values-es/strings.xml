@@ -50,4 +50,8 @@
     <string name="payment_successful">Pago correcto, disfruta!</string>
     <string name="paypal_loaded_succesfully">Paypal se cargó correctamente!</string>
     <string name="paypal_could_not_load">Ocurrió un problema\nal intentar cargar PayPal</string>
+    <string name="insert_your_card_details">Ingresa los detalles de tu tarjeta</string>
+    <string name="expiration_date">Fecha de Expiración</string>
+    <string name="required">Campo requerido</string>
+    <string name="coming_soon">Pronto!</string>
 </resources>

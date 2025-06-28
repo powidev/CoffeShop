@@ -61,4 +61,14 @@
     <string name="payment_successful">Payment successful, enjoy!</string>
     <string name="paypal_loaded_succesfully">Paypal was loaded successfully!</string>
     <string name="paypal_could_not_load">There was a problem while\ntrying to load PayPal</string>
+    <string name="insert_your_card_details">Insert your card details</string>
+    <string name="cc" translatable="false">CC</string>
+    <string name="hint_card_number" translatable="false">XXXX-XXXX-XXXX-XXXX</string>
+    <string name="expiration_date">Expiration date</string>
+    <string name="cci" translatable="false">CCI</string>
+    <string name="expiration_date_hint" translatable="false">DD/MM</string>
+    <string name="cvv" translatable="false">CVV</string>
+    <string name="cvv_hint" translatable="false">XXX</string>
+    <string name="required">Required field</string>
+    <string name="coming_soon">Coming Soon!</string>
 </resources>

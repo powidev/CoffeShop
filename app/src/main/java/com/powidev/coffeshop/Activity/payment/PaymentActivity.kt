@@ -65,10 +65,9 @@ class PaymentActivity : AppCompatActivity() {
 
             when (selectedPaymentPosition) {
                 0 -> handleCashPayment()
-                1 -> Toast.makeText(this, "Yape payment selected", Toast.LENGTH_SHORT).show()
+                1 -> Toast.makeText(this, resources.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
                 2 -> handlePaypalPayment()
-                3 -> Toast.makeText(this, "Credit/Debit Card payment selected", Toast.LENGTH_SHORT)
-                    .show()
+                3 -> handleCardPayment()
 
                 else -> Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT)
                     .show()
@@ -94,5 +93,9 @@ class PaymentActivity : AppCompatActivity() {
 
     private fun handlePaypalPayment() {
         startActivity(Intent(this, PaypalActivity::class.java))
+    }
+
+    private fun handleCardPayment() {
+        startActivity(Intent(this, CardPaymentActivity::class.java))
     }
 }
