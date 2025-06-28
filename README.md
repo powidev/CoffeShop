@@ -14,6 +14,12 @@
 
 ### Secrets Management
 
+> [!CAUTION]
+> The app will NOT build as it is due to string resource missing. This string represents a PayPal API
+> secret if you only want to test the app just create a string resource with the following ids:
+> - client_id
+> - secret_id
+
 If you want to use the Paypal Integration in the app you need to create a secrets.xml inside the res
 folder. There is template called secrets-template.xml that you may use if you need a guide.
 
