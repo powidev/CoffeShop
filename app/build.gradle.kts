@@ -56,10 +56,14 @@ dependencies {
 
     implementation(libs.glide)
     implementation(libs.gson)
+    implementation(libs.lottie)
+
+    implementation(libs.fast.android.networking.android.networking)
+    implementation(libs.okhttp)
+    implementation(libs.paypal.web.payments)
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-
 }

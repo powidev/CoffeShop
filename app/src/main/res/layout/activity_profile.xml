@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightCream"
-    tools:context=".Activity.CartActivity">
+    tools:context=".Activity.ProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
