@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.powidev.coffeshop.Activity.AdminActivity
+import com.powidev.coffeshop.Activity.MainActivity
 import com.powidev.coffeshop.data.local.UserDatabase
 import com.powidev.coffeshop.databinding.ActivityLoginBinding
+import com.powidev.coffeshop.manager.SessionManager
 import com.powidev.coffeshop.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var repository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userDao = UserDatabase.getInstance(this).userDao()
-        repository = UserRepository(userDao)
+        userRepository = UserRepository(userDao)
 
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString().trim()
@@ -31,25 +32,39 @@ class LoginActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 lifecycleScope.launch {
-                    val success = withContext(Dispatchers.IO) {
-                        repository.loginUser(email, password)
-                    }
+                    val user = userRepository.loginUser(email, password)
+                    if (user != null) {
+                        // Pasa el contexto (this@LoginActivity) como primer parámetro
+                        SessionManager.setCurrentUser(this@LoginActivity, user)
 
-                    if (success) {
-                        Toast.makeText(this@LoginActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, com.powidev.coffeshop.Activity.MainActivity::class.java))
+                        val destination = if (SessionManager.isAdmin(this@LoginActivity)) {
+                            AdminActivity::class.java
+                        } else {
+                            MainActivity::class.java
+                        }
+                        startActivity(Intent(this@LoginActivity, destination))
                         finish()
                     } else {
                         Toast.makeText(this@LoginActivity, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Complete todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.goToRegisterButton.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
+
+    private fun redirectUser(role: String) {
+        val destination = if (role == "admin") AdminActivity::class.java else MainActivity::class.java
+        startActivity(Intent(this, destination))
+        finish()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

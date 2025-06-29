@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.powidev.coffeshop.Activity.AdminActivity
+import com.powidev.coffeshop.Activity.MainActivity
 import com.powidev.coffeshop.data.local.User
 import com.powidev.coffeshop.data.local.UserDatabase
 import com.powidev.coffeshop.databinding.ActivityRegisterBinding
+import com.powidev.coffeshop.manager.SessionManager
 import com.powidev.coffeshop.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var repository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userDao = UserDatabase.getInstance(this).userDao()
-        repository = UserRepository(userDao)
+        userRepository = UserRepository(userDao)
 
         binding.registerButton.setOnClickListener {
             val email = binding.emailEditText.text.toString().trim()
@@ -32,21 +33,42 @@ class RegisterActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 lifecycleScope.launch {
-                    val success = withContext(Dispatchers.IO) {
-                        repository.registerUser(User(email, password))
-                    }
+                    val user = User(
+                        email = email,
+                        password = password,
+                        role = if (email.contains("@admin.")) "admin" else "user"
+                    )
 
-                    if (success) {
-                        Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                        finish()
-                    } else {
-                        Toast.makeText(this@RegisterActivity, "El usuario ya existe", Toast.LENGTH_SHORT).show()
+                    try {
+                        if (userRepository.registerUser(user)) {
+                            // Pasa el contexto (this@RegisterActivity) como primer parámetro
+                            SessionManager.setCurrentUser(this@RegisterActivity, user)
+
+                            val destination = if (SessionManager.isAdmin(this@RegisterActivity)) {
+                                AdminActivity::class.java
+                            } else {
+                                MainActivity::class.java
+                            }
+                            startActivity(Intent(this@RegisterActivity, destination))
+                            finish()
+                        } else {
+                            Toast.makeText(this@RegisterActivity, "El usuario ya existe", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this@RegisterActivity, "Error en el registro", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } else {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun redirectUser(role: String) {
+        val destination = if (role == "admin") AdminActivity::class.java else MainActivity::class.java
+        startActivity(Intent(this, destination))
+        finish()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

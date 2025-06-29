@@ -83,6 +83,7 @@ class PaypalActivity : AppCompatActivity() {
         }, 1500)
     }
 
+
     private fun readPaypalSecrets(): Boolean {
         var result = false
 

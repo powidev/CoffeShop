@@ -1,5 +1,6 @@
 package com.powidev.coffeshop.Repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
@@ -77,26 +78,77 @@ class MainRepository {
         return listData
     }
 
-    fun loadItemCategory(categoryId: String): LiveData<MutableList<ItemsModel>>{
-        val itemsLiveData= MutableLiveData<MutableList<ItemsModel>>()
-        val ref=firebaseDatabase.getReference("Items")
-        val query: Query=ref.orderByChild("categoryId").equalTo(categoryId)
+    fun loadItemsByCategory(categoryId: String): LiveData<MutableList<ItemsModel>> {
+        val itemsLiveData = MutableLiveData<MutableList<ItemsModel>>()
+        val ref = firebaseDatabase.getReference("Items")
+            .orderByChild("categoryId")
+            .equalTo(categoryId)
 
-        query.addListenerForSingleValueEvent(object: ValueEventListener{
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list=mutableListOf<ItemsModel>()
-                for(childSnapshot in snapshot.children){
-                    val item=childSnapshot.getValue(ItemsModel::class.java)
-                    item?.let { list.add(it) }
+                val items = mutableListOf<ItemsModel>()
+                snapshot.children.forEach { childSnapshot ->
+                    val item = childSnapshot.getValue(ItemsModel::class.java)
+                    item?.let { items.add(it) }
                 }
-                itemsLiveData.value=list
+                itemsLiveData.value = items
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.e("Firebase", "Error al cargar ítems", error.toException())
+                itemsLiveData.value = mutableListOf()
             }
-
         })
         return itemsLiveData
     }
+
+    fun createItem(item: ItemsModel): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val ref = firebaseDatabase.getReference("Items")
+        val key = ref.push().key ?: return result.apply { value = false }
+
+        item.id = key
+        ref.child(key).setValue(item)
+            .addOnSuccessListener { result.value = true }
+            .addOnFailureListener {
+                Log.e("Repository", "Error creating item", it)
+                result.value = false
+            }
+
+        return result
+    }
+
+    fun updateItem(item: ItemsModel): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
+        if (item.id.isNullOrEmpty()) {
+            result.value = false
+            return result
+        }
+
+        firebaseDatabase.getReference("Items").child(item.id!!)
+            .setValue(item)
+            .addOnSuccessListener { result.value = true }
+            .addOnFailureListener {
+                Log.e("Repository", "Error updating item", it)
+                result.value = false
+            }
+
+        return result
+    }
+
+    fun deleteItem(itemId: String): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
+        firebaseDatabase.getReference("Items").child(itemId)
+            .removeValue()
+            .addOnSuccessListener { result.value = true }
+            .addOnFailureListener {
+                Log.e("Repository", "Error deleting item", it)
+                result.value = false
+            }
+
+        return result
+    }
+
 }

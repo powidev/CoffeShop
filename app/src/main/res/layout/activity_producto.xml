@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutProducto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightCream"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Botón Back -->
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Volver"
+        android:src="@drawable/back" />
+
+    <Spinner
+        android:id="@+id/spinnerCategorias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/spinnerBackground"
+        android:popupBackground="@color/spinnerPopupBackground"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProductos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

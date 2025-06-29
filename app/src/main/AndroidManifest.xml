@@ -31,6 +31,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activity.DetailAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ProductoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.AdminActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".Activity.OrderDetailsActivity"
             android:exported="false" />
         <activity

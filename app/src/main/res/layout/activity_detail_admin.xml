@@ -1,0 +1,133 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:id="@+id/detailAdmin"
+    tools:context=".Activity.DetailAdminActivity">
+
+    <!-- Product Image Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_fields"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <ImageView
+            android:id="@+id/picMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Floating Button for Image Change -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_change_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:contentDescription="Change Image"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toBottomOf="@+id/card_image"
+        app:layout_constraintEnd_toEndOf="@+id/card_image"
+        app:srcCompat="@drawable/ic_edit"
+        app:tint="@color/black" />
+
+
+    <!-- Fields Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_fields"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_image">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/titleTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Title"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/priceTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Price (e.g. 4.99)"
+                android:inputType="numberDecimal"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/descriptionTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="top"
+                android:hint="Description"
+                android:minLines="3"
+                android:padding="12dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Action Buttons Section -->
+    <LinearLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_fields">
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#E57373"
+            android:text="Delete"
+            android:textColor="#FFF" />
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#FFD54F"
+            android:text="Edit"
+            android:textColor="#FFF" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#81C784"
+            android:text="Save"
+            android:textColor="#FFF" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,9 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class], version = 2)
 abstract class UserDatabase : RoomDatabase() {
-
     abstract fun userDao(): UserDao
 
     companion object {
@@ -19,10 +18,20 @@ abstract class UserDatabase : RoomDatabase() {
                     context.applicationContext,
                     UserDatabase::class.java,
                     "user_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Solo para desarrollo
+                    // .addMigrations(MIGRATION_1_2) // Para producción
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
+
+        // Ejemplo de migración para producción:
+        // private val MIGRATION_1_2 = object : Migration(1, 2) {
+        //     override fun migrate(database: SupportSQLiteDatabase) {
+        //         database.execSQL("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user'")
+        //     }
+        // }
     }
 }

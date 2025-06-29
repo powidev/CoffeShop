@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="spinnerBackground">#FF000000</color>
+    <color name="spinnerPopupBackground">#FF000000</color>
+</resources>

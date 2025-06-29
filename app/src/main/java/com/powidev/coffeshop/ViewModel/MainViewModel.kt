@@ -23,6 +23,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun loadItems(categoryId: String): LiveData<MutableList<ItemsModel>> {
-        return repository.loadItemCategory(categoryId)
+        return repository.loadItemsByCategory(categoryId)
     }
 }
