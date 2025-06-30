@@ -55,16 +55,13 @@
                 android:layout_height="match_parent"
                 android:layout_margin="16dp">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/banner"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/bannerViewPager"
                     android:layout_width="0dp"
                     android:layout_height="170dp"
-                    android:scaleType="fitXY"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/CircleImageView"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ProgressBar
                     android:id="@+id/progressBarBanner"
@@ -76,8 +73,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/banner" />
+                    app:layout_constraintTop_toTopOf="@+id/bannerViewPager" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/textView3"

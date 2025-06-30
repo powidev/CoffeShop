@@ -3,12 +3,14 @@ package com.powidev.coffeshop.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.registerForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +19,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.storage.FirebaseStorage
 import com.powidev.coffeshop.Domain.ItemsModel
 import com.powidev.coffeshop.R
 import com.powidev.coffeshop.Repository.MainRepository
 import com.powidev.coffeshop.ViewModel.DetailAdminViewModel
 import com.powidev.coffeshop.ViewModelFactory.ViewModelFactory
+import java.util.UUID
 
 class DetailAdminActivity : AppCompatActivity() {
 
@@ -111,7 +115,11 @@ class DetailAdminActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
             if (validateFields()) {
-                currentItem?.let { updateItem() } ?: createItem()
+                if (selectedImageUri != null) {
+                    uploadImageAndUpdate()
+                } else {
+                    updateProductData()
+                }
             }
         }
 
@@ -145,16 +153,102 @@ class DetailAdminActivity : AppCompatActivity() {
         }
     }
 
-    private fun createItem() {
-        val newItem = ItemsModel(
-            title = titleEditText.text.toString(),
-            price = priceEditText.text.toString().toDouble(),
-            description = descriptionEditText.text.toString(),
-            picUrl = selectedImageUri?.let { listOf(it.toString()) } ?: emptyList(),
-            categoryId = "1"
-        )
+    private fun uploadImageAndUpdate() {
+        selectedImageUri?.let { uri ->
+            val storageRef = FirebaseStorage.getInstance().reference
+            val imageName = "product_${UUID.randomUUID()}.jpg"
+            val imageRef = storageRef.child("product_images/$imageName")
 
-        viewModel.createItem(newItem).observe(this) { success ->
+            showLoading(true)
+
+            imageRef.putFile(uri)
+                .addOnSuccessListener {
+                    imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                        updateProductData(downloadUri.toString()) // Asegúrate de pasar la nueva URL
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    showLoading(false)
+                    Log.e("FirebaseStorage", "Error al subir imagen", exception)
+                    Toast.makeText(this, "Error al subir imagen", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun updateProductData(newImageUrl: String? = null) {
+        currentItem?.let { original ->
+            val updatedItem = original.copy(
+                title = titleEditText.text.toString(),
+                price = priceEditText.text.toString().toDoubleOrNull() ?: 0.0,
+                description = descriptionEditText.text.toString(),
+                picUrl = newImageUrl?.let { listOf(it) } ?: original.picUrl
+            )
+
+            showLoading(true)
+
+            viewModel.updateItem(updatedItem).observe(this) { success ->
+                showLoading(false)
+                if (success) {
+                    Toast.makeText(this, "Producto actualizado", Toast.LENGTH_SHORT).show()
+                    currentItem = updatedItem
+                    enableEditing(false)
+                    selectedImageUri = null // Restablece la imagen seleccionada
+                } else {
+                    Toast.makeText(this, "Error al actualizar el producto", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } ?: run {
+            Toast.makeText(this, "No se encontró el producto para actualizar", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun createItem() {
+        if (selectedImageUri != null) {
+            uploadImageAndCreate()
+        } else {
+            val newItem = ItemsModel(
+                title = titleEditText.text.toString(),
+                price = priceEditText.text.toString().toDouble(),
+                description = descriptionEditText.text.toString(),
+                picUrl = emptyList(),
+                categoryId = "1"
+            )
+            saveItemToDatabase(newItem)
+        }
+    }
+
+    private fun uploadImageAndCreate() {
+        selectedImageUri?.let { uri ->
+            val storageRef = FirebaseStorage.getInstance().reference
+            val imageName = "product_${UUID.randomUUID()}.jpg"
+            val imageRef = storageRef.child("product_images/$imageName")
+
+            showLoading(true)
+
+            imageRef.putFile(uri)
+                .addOnSuccessListener { taskSnapshot ->
+                    imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                        val newItem = ItemsModel(
+                            title = titleEditText.text.toString(),
+                            price = priceEditText.text.toString().toDouble(),
+                            description = descriptionEditText.text.toString(),
+                            picUrl = listOf(downloadUri.toString()),
+                            categoryId = "1"
+                        )
+                        saveItemToDatabase(newItem)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    showLoading(false)
+                    Log.e("FirebaseStorage", "Error al subir imagen", exception)
+                    Toast.makeText(this, "Error al subir imagen", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun saveItemToDatabase(item: ItemsModel) {
+        viewModel.createItem(item).observe(this) { success ->
+            showLoading(false)
             if (success) {
                 Toast.makeText(this, "Producto creado con éxito", Toast.LENGTH_SHORT).show()
                 finish()
@@ -164,48 +258,32 @@ class DetailAdminActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateItem() {
-        currentItem?.let { originalItem ->
-            val updatedItem = originalItem.copy(
-                title = titleEditText.text.toString(),
-                price = priceEditText.text.toString().toDouble(),
-                description = descriptionEditText.text.toString(),
-                picUrl = selectedImageUri?.let { listOf(it.toString()) } ?: originalItem.picUrl
-            )
-
-            viewModel.updateItem(updatedItem).observe(this) { success ->
-                if (success) {
-                    Toast.makeText(this, "Producto actualizado", Toast.LENGTH_SHORT).show()
-                    currentItem = updatedItem
-                    enableEditing(false)
-                } else {
-                    Toast.makeText(this, "Error al actualizar", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
     private fun showDeleteConfirmationDialog() {
         AlertDialog.Builder(this)
             .setTitle("Confirmar eliminación")
             .setMessage("¿Estás seguro de eliminar este producto?")
             .setPositiveButton("Eliminar") { _, _ ->
-                currentItem?.id?.let { deleteItem(it) }
+                currentItem?.title?.let { title ->
+                    deleteItemByTitle(title)
+                }
             }
             .setNegativeButton("Cancelar", null)
             .show()
     }
 
-    private fun deleteItem(itemId: String) {
-        viewModel.deleteItem(itemId).observe(this) { success ->
+    private fun deleteItemByTitle(title: String) {
+        showLoading(true)
+        viewModel.deleteItemByTitle(title).observe(this) { success ->
+            showLoading(false)
             if (success) {
-                Toast.makeText(this, "Producto eliminado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Producto eliminado con éxito", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
-                Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     private fun enableEditing(enable: Boolean) {
         titleEditText.isEnabled = enable
@@ -222,5 +300,13 @@ class DetailAdminActivity : AppCompatActivity() {
         saveButton.visibility = if (isEditing || isNewItem) View.VISIBLE else View.GONE
         editButton.visibility = if (!isNewItem && !isEditing) View.VISIBLE else View.GONE
         deleteButton.visibility = if (!isNewItem) View.VISIBLE else View.GONE
+    }
+
+    private fun showLoading(show: Boolean) {
+        // Implementa tu lógica de carga aquí
+        saveButton.isEnabled = !show
+        editButton.isEnabled = !show
+        deleteButton.isEnabled = !show
+        changeImageFab.isEnabled = !show
     }
 }

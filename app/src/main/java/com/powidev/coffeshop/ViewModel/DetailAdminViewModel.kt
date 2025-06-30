@@ -15,7 +15,8 @@ class DetailAdminViewModel(private val repository: MainRepository) : ViewModel()
         return repository.updateItem(item)
     }
 
-    fun deleteItem(itemId: String): LiveData<Boolean> {
-        return repository.deleteItem(itemId)
+    fun deleteItemByTitle(title: String): LiveData<Boolean> {
+        return repository.deleteItemByTitle(title)
     }
+
 }

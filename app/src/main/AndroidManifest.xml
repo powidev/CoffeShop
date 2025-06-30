@@ -15,6 +15,12 @@
         android:theme="@style/Theme.CoffeShop"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.AddCoffeeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ManageCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.payment.CardPaymentActivity"
             android:exported="false" />
         <activity
@@ -38,8 +44,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.AdminActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.OrderDetailsActivity"
             android:exported="false" />
@@ -72,8 +77,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

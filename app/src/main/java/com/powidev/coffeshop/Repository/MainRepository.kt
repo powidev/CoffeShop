@@ -1,37 +1,41 @@
 package com.powidev.coffeshop.Repository
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.powidev.coffeshop.Domain.BannerModel
 import com.powidev.coffeshop.Domain.CategoryModel
 import com.powidev.coffeshop.Domain.ItemsModel
 
 class MainRepository {
     private val firebaseDatabase= FirebaseDatabase.getInstance()
+    private val storageRef: StorageReference = FirebaseStorage.getInstance().reference
 
-    fun loadBanner():LiveData<MutableList<BannerModel>>{
-        val listData=MutableLiveData<MutableList<BannerModel>>()
-        val ref=firebaseDatabase.getReference("Banner")
-        ref.addValueEventListener(object:ValueEventListener{
+    fun loadBanner(): LiveData<MutableList<BannerModel>> {
+        val listData = MutableLiveData<MutableList<BannerModel>>()
+        val ref = firebaseDatabase.getReference("Banner")
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list=mutableListOf<BannerModel>()
-                    for(childSnapshot in snapshot.children){
-                        val item=childSnapshot.getValue(BannerModel::class.java)
-                        item?.let { list.add(it) }
-                    }
-                    listData.value=list
+                val list = mutableListOf<BannerModel>()
+                for (childSnapshot in snapshot.children) {
+                    val item = childSnapshot.getValue(BannerModel::class.java)
+                    item?.let { list.add(it) }
+                }
+                listData.value = list
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.e("Repository", "Error al cargar banners", error.toException())
             }
-
         })
         return listData
     }
@@ -104,51 +108,114 @@ class MainRepository {
 
     fun createItem(item: ItemsModel): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
-        val ref = firebaseDatabase.getReference("Items")
-        val key = ref.push().key ?: return result.apply { value = false }
-
-        item.id = key
-        ref.child(key).setValue(item)
-            .addOnSuccessListener { result.value = true }
-            .addOnFailureListener {
-                Log.e("Repository", "Error creating item", it)
+        try {
+            val itemsRef = firebaseDatabase.getReference("Items")
+            val itemId = itemsRef.push().key ?: run {
                 result.value = false
+                return result
             }
 
+            item.id = itemId
+            itemsRef.child(itemId).setValue(item)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Repository", "Item creado con ID: $itemId")
+                        result.value = true
+                    } else {
+                        Log.e("Repository", "Error al crear item", task.exception)
+                        result.value = false
+                    }
+                }
+        } catch (e: Exception) {
+            Log.e("Repository", "Excepción al crear item", e)
+            result.value = false
+        }
         return result
     }
 
     fun updateItem(item: ItemsModel): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
 
-        if (item.id.isNullOrEmpty()) {
-            result.value = false
-            return result
-        }
+        // Obtén la lista actual de items
+        firebaseDatabase.getReference("Items")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                // Convierte el snapshot a una lista de ItemsModel
+                val items = snapshot.getValue(object : GenericTypeIndicator<List<ItemsModel>>() {}) ?: emptyList()
 
-        firebaseDatabase.getReference("Items").child(item.id!!)
-            .setValue(item)
-            .addOnSuccessListener { result.value = true }
+                // Encuentra el índice del producto a actualizar por título
+                val index = items.indexOfFirst { it.title == item.title }
+
+                if (index != -1) {
+                    // Actualiza el producto en el índice específico
+                    firebaseDatabase.getReference("Items/$index")
+                        .updateChildren(item.getUpdatableFields())
+                        .addOnSuccessListener { result.value = true }
+                        .addOnFailureListener {
+                            Log.e("UpdateItem", "Error al actualizar: ${it.message}")
+                            result.value = false
+                        }
+                } else {
+                    Log.e("UpdateItem", "Producto no encontrado")
+                    result.value = false
+                }
+            }
             .addOnFailureListener {
-                Log.e("Repository", "Error updating item", it)
+                Log.e("UpdateItem", "Error al obtener los productos: ${it.message}")
                 result.value = false
             }
 
         return result
     }
 
-    fun deleteItem(itemId: String): LiveData<Boolean> {
+    fun deleteItemByTitle(title: String): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
+        val ref = firebaseDatabase.getReference("Items")
 
-        firebaseDatabase.getReference("Items").child(itemId)
-            .removeValue()
-            .addOnSuccessListener { result.value = true }
-            .addOnFailureListener {
-                Log.e("Repository", "Error deleting item", it)
-                result.value = false
-            }
+        ref.orderByChild("title").equalTo(title)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (childSnapshot in snapshot.children) {
+                            childSnapshot.ref.removeValue()
+                                .addOnSuccessListener {
+                                    result.value = true
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("Repository", "Error al eliminar el producto", e)
+                                    result.value = false
+                                }
+                        }
+                    } else {
+                        Log.e("Repository", "No se encontró el producto con título: $title")
+                        result.value = false
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("Repository", "Error al buscar el producto", error.toException())
+                    result.value = false
+                }
+            })
 
         return result
+    }
+
+    // Método adicional para manejar imágenes
+    fun uploadImage(imageUri: Uri, callback: (String?) -> Unit) {
+        val imageName = "product_${System.currentTimeMillis()}.jpg"
+        val imageRef = storageRef.child("product_images/$imageName")
+
+        imageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    callback(uri.toString())
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("Repository", "Error al subir imagen", e)
+                callback(null)
+            }
     }
 
 }
