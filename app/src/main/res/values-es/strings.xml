@@ -55,4 +55,13 @@
     <string name="required">Campo requerido</string>
     <string name="coming_soon">Pronto!</string>
     <string name="empty_cart">El carrito está vacío!</string>
+    <string name="new_category_name">Nombre de la nueva categoría…</string>
+    <string name="add_category">Agregar Categoría</string>
+    <string name="coffee_title">Título del Café</string>
+    <string name="extra_info_optional">Información extra (opcional)</string>
+    <string name="coffee_description" >Descripción del Café</string>
+    <string name="coffee_price">Precio del Café</string>
+    <string name="imagen_seleccionada">Imagen seleccionada</string>
+    <string name="select_image">Seleccionar una imagen</string>
+    <string name="add_coffee">Agregar Café</string>
 </resources>

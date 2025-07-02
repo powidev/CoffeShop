@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightCream"
     android:padding="16dp">
 
     <Spinner
+        android:layout_marginTop="28dp"
         android:id="@+id/spinnerCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +17,7 @@
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Título del Café"
+        android:hint="@string/coffee_title"
         android:inputType="text"
         android:padding="8dp" />
 
@@ -23,15 +25,15 @@
         android:id="@+id/editTextExtra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Información extra (opcional)"
+        android:hint="@string/extra_info_optional"
         android:inputType="text"
-        android:padding="8dp" />
+        android:padding="8dp"/>
 
     <EditText
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Descripción del Café"
+        android:hint="@string/coffee_description"
         android:inputType="textMultiLine"
         android:padding="8dp" />
 
@@ -39,7 +41,7 @@
         android:id="@+id/editTextPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Precio del Café"
+        android:hint="@string/coffee_price"
         android:inputType="numberDecimal"
         android:padding="8dp" />
 
@@ -58,18 +60,20 @@
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
-        android:contentDescription="Imagen seleccionada" />
+        android:contentDescription="@string/imagen_seleccionada" />
 
     <Button
         android:id="@+id/buttonSelectImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen" />
+        android:backgroundTint="@color/darkBrown"
+        android:text="@string/select_image" />
 
     <Button
         android:id="@+id/buttonAddCoffee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar Café"
+        android:backgroundTint="@color/darkBrown"
+        android:text="@string/add_coffee"
         android:layout_marginTop="16dp" />
 </LinearLayout>

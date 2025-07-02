@@ -3,21 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightCream"
     android:padding="16dp">
 
     <EditText
         android:id="@+id/editTextCategory"
+        android:layout_marginTop="28dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre de la nueva categoría"
+        android:hint="@string/new_category_name"
         android:inputType="text"
         android:padding="8dp" />
 
     <Button
+        android:backgroundTint="@color/darkBrown"
         android:id="@+id/buttonAddCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar Categoría"
+        android:text="@string/add_category"
         android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
