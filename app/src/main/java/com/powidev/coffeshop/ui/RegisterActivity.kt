@@ -2,63 +2,88 @@ package com.powidev.coffeshop.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.powidev.coffeshop.Activity.AdminActivity
 import com.powidev.coffeshop.Activity.MainActivity
 import com.powidev.coffeshop.data.local.User
-import com.powidev.coffeshop.data.local.UserDatabase
 import com.powidev.coffeshop.databinding.ActivityRegisterBinding
 import com.powidev.coffeshop.manager.SessionManager
-import com.powidev.coffeshop.repository.UserRepository
-import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var userRepository: UserRepository
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userDao = UserDatabase.getInstance(this).userDao()
-        userRepository = UserRepository(userDao)
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         binding.registerButton.setOnClickListener {
             val email = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString().trim()
+            val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
 
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                lifecycleScope.launch {
-                    val user = User(
-                        email = email,
-                        password = password,
-                        role = if (email.contains("@admin.")) "admin" else "user"
-                    )
+            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                showToast("Complete todos los campos")
+                return@setOnClickListener
+            }
 
-                    try {
-                        if (userRepository.registerUser(user)) {
-                            // Pasa el contexto (this@RegisterActivity) como primer parámetro
-                            SessionManager.setCurrentUser(this@RegisterActivity, user)
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                showToast("Correo inválido")
+                return@setOnClickListener
+            }
 
-                            val destination = if (SessionManager.isAdmin(this@RegisterActivity)) {
-                                AdminActivity::class.java
-                            } else {
-                                MainActivity::class.java
+            if (password.length < 6) {
+                showToast("La contraseña debe tener al menos 6 caracteres")
+                return@setOnClickListener
+            }
+
+            if (password != confirmPassword) {
+                showToast("Las contraseñas no coinciden")
+                return@setOnClickListener
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val uid = auth.currentUser?.uid ?: ""
+                        val role = if (email.contains("@admin.")) "admin" else "user"
+                        val user = User(email, password, role)
+
+                        // Guardar en sesión local
+                        SessionManager.setCurrentUser(this, user)
+
+                        // Guardar en Firestore
+                        val userMap = hashMapOf(
+                            "uid" to uid,
+                            "email" to email,
+                            "role" to role,
+                            "createdAt" to System.currentTimeMillis()
+                        )
+
+                        firestore.collection("users").document(uid)
+                            .set(userMap)
+                            .addOnSuccessListener {
+                                showToast("Usuario registrado con éxito")
+                                redirectUser(role)
                             }
-                            startActivity(Intent(this@RegisterActivity, destination))
-                            finish()
-                        } else {
-                            Toast.makeText(this@RegisterActivity, "El usuario ya existe", Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: Exception) {
-                        Toast.makeText(this@RegisterActivity, "Error en el registro", Toast.LENGTH_SHORT).show()
+                            .addOnFailureListener {
+                                showToast("Error al guardar en Firestore: ${it.message}")
+                            }
+
+                    } else {
+                        showToast("Error: ${task.exception?.message}")
                     }
                 }
-            }
         }
     }
 
