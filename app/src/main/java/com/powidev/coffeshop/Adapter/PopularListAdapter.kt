@@ -71,12 +71,20 @@ class PopularListAdapter(
 
                 Glide.with(context).load(item.picUrl[0]).into(binding.picMain)
 
-                binding.root.setOnClickListener { navigateToDetail(item) }
+                /* Desactiva el click de Left */
+                if (!SessionManager.isAdmin(context)) {
+                    binding.root.setOnClickListener {
+                        navigateToDetail(item)
+                    }
+                } else {
+                    binding.root.setOnClickListener(null)
+                }
+
 
                 if (SessionManager.isAdmin(context)) {
                     binding.btnRemovePopular.visibility = View.VISIBLE
                     binding.btnRemovePopular.setOnClickListener {
-                        onRemoveClicked(item) // Se llama el callback
+                        onRemoveClicked(item)
                     }
                 } else {
                     binding.btnRemovePopular.visibility = View.GONE
@@ -92,7 +100,15 @@ class PopularListAdapter(
 
                 Glide.with(context).load(item.picUrl[0]).into(binding.picMain)
 
-                binding.root.setOnClickListener { navigateToDetail(item) }
+                /* Desactiva el click de Right */
+                if (!SessionManager.isAdmin(context)) {
+                    binding.root.setOnClickListener {
+                        navigateToDetail(item)
+                    }
+                } else {
+                    binding.root.setOnClickListener(null)
+                }
+
 
                 if (SessionManager.isAdmin(context)) {
                     binding.btnRemovePopular.visibility = View.VISIBLE
