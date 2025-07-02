@@ -71,31 +71,31 @@ class PaypalActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             fetchAccessToken()
+
+            loadingDialogFragment.show(supportFragmentManager, "loader")
+
+            Handler(mainLooper).postDelayed({
+                if (loadingDialogFragment.isAdded) {
+                    loadingDialogFragment.dismissAllowingStateLoss()
+                }
+                startPayment()
+            }, 1500)
         }
-
-        loadingDialogFragment.show(supportFragmentManager, "loader")
-
-        Handler(mainLooper).postDelayed({
-            if (loadingDialogFragment.isAdded) {
-                loadingDialogFragment.dismissAllowingStateLoss()
-            }
-            startPayment()
-        }, 1500)
     }
 
-
     private fun readPaypalSecrets(): Boolean {
-        var result = false
+        clientID = resources.getString(R.string.client_id)
+        secretID = resources.getString(R.string.secret_id)
 
-        try {
-            clientID = resources.getString(R.string.client_id)
-            secretID = resources.getString(R.string.secret_id)
-            result = true
-        } catch (e: Exception) {
-            Log.d("debug", "SECRETS.xml not found", e)
+        if (!clientID.trim().isEmpty() || !secretID.trim().isEmpty()) {
+            return true
+        } else {
+            Log.i(
+                "PayPalAPI",
+                "PayPal secrets have not been set up correctly, integration will not work"
+            )
+            return false
         }
-
-        return result;
     }
 
     private fun fetchAccessToken() {
