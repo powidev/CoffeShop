@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/lightCream"
+    android:background="@drawable/coffee_bg"
+    android:scaleType="centerCrop"
     tools:context=".Activity.AdminActivity">
 
     <RelativeLayout
@@ -16,28 +17,41 @@
         <View
             android:id="@+id/top_view"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:background="@drawable/blue_bg" />
+            android:layout_height="200dp" />
 
-        <TextView
-            android:id="@+id/textViewAdmin"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dashboard"
-            android:textColor="@color/textPrimary"
-            android:textSize="36sp"
-            android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="8dp"
+                app:srcCompat="@drawable/coffee_logo" />
+
+            <TextView
+                android:id="@+id/textViewAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Dulce Aroma"
+                android:textColor="@color/black"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewAdmin"
-            android:layout_marginTop="42dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="92dp"
             android:columnCount="2"
-            android:rowCount="4">
+            android:rowCount="5">
 
             <!-- CARD 1 -->
             <androidx.cardview.widget.CardView
@@ -51,6 +65,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/lightCream"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -64,8 +79,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Home"
-                        android:textColor="@color/textPrimary"
+                        android:text="@string/home"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -76,15 +91,16 @@
                 android:id="@+id/cardProducto"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_margin="12dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:layout_margin="12dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/lightCream"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -92,14 +108,14 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/ic_home" />
+                        app:srcCompat="@drawable/ic_cafe" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Producto"
-                        android:textColor="@color/textPrimary"
+                        android:text="@string/caf_s"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -117,6 +133,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/lightCream"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -124,14 +141,14 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/ic_home" />
+                        app:srcCompat="@drawable/ic_categoria" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Categoria"
-                        android:textColor="@color/textPrimary"
+                        android:text="@string/categorias"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -149,6 +166,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/lightCream"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -156,14 +174,14 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/ic_home" />
+                        app:srcCompat="@drawable/ic_add_coffee" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Agregar Producto"
-                        android:textColor="@color/textPrimary"
+                        android:text="@string/agregar_caf"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -171,7 +189,7 @@
 
             <!-- CARD 5 -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardReporte"
+                android:id="@+id/cardPopular"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_margin="12dp"
@@ -181,6 +199,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/lightCream"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -188,15 +207,14 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/ic_report"
-                        android:alpha="0.5"/>
+                        app:srcCompat="@drawable/ic_popular" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Próximamente"
-                        android:textColor="@color/textPrimary"
+                        android:text="@string/populares"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -213,6 +231,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/lightCream"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -220,20 +239,87 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
-                        app:srcCompat="@drawable/ic_suport"
-                        android:alpha="0.5"/>
+                        android:alpha="0.5"
+                        app:srcCompat="@drawable/ic_report" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="Próximamente"
-                        android:textColor="@color/textPrimary"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 7 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightCream"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal"
+                        android:alpha="0.5"
+                        app:srcCompat="@drawable/ic_suport" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Próximamente"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 8 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightCream"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal"
+                        android:alpha="0.5"
+                        app:srcCompat="@drawable/ic_settings" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Próximamente"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </GridLayout>
+
     </RelativeLayout>
 </ScrollView>

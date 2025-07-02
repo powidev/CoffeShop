@@ -3,7 +3,9 @@ package com.powidev.coffeshop.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,8 +28,11 @@ class ManageCategoryActivity : AppCompatActivity() {
         val buttonAddCategory = findViewById<Button>(R.id.buttonAddCategory)
         val recyclerViewCategories = findViewById<RecyclerView>(R.id.recyclerViewCategories)
 
-        // Configurar RecyclerView
-        managerCategoryAdapter = ManagerCategoryAdapter(categories) { deleteCategory(it) }
+        managerCategoryAdapter = ManagerCategoryAdapter(
+            categories,
+            onEdit = { showEditDialog(it) },
+            onDelete = { deleteCategory(it) }
+        )
         recyclerViewCategories.layoutManager = LinearLayoutManager(this)
         recyclerViewCategories.adapter = managerCategoryAdapter
 
@@ -44,6 +49,12 @@ class ManageCategoryActivity : AppCompatActivity() {
                 editTextCategory.text.clear() // Limpia el campo después de agregar
             }
         }
+
+        val backBtn = findViewById<LinearLayout>(R.id.backBtn)
+        backBtn.setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun loadCategories() {
@@ -66,6 +77,42 @@ class ManageCategoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun showEditDialog(category: CategoryModel) {
+        val editText = EditText(this)
+        editText.setText(category.title)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Editar Categoría")
+            .setView(editText)
+            .setPositiveButton("Actualizar") { _, _ ->
+                val newTitle = editText.text.toString().trim()
+                if (newTitle.isNotEmpty()) {
+                    updateCategory(category, newTitle)
+                } else {
+                    Toast.makeText(this, "El nombre no puede estar vacío.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .create()
+
+        dialog.show()
+    }
+
+    private fun updateCategory(category: CategoryModel, newTitle: String) {
+        val index = categories.indexOfFirst { it.id == category.id }
+        if (index != -1) {
+            val updatedCategory = category.copy(title = newTitle)
+            categories[index] = updatedCategory
+
+            database.setValue(categories).addOnSuccessListener {
+                Toast.makeText(this, "Categoría actualizada exitosamente.", Toast.LENGTH_SHORT).show()
+                managerCategoryAdapter.notifyItemChanged(index)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Error al actualizar la categoría.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun deleteCategory(category: CategoryModel) {
         categories.remove(category)
         categories.forEachIndexed { index, item -> item.id = index } // Recalcular IDs
@@ -74,4 +121,5 @@ class ManageCategoryActivity : AppCompatActivity() {
             managerCategoryAdapter.notifyDataSetChanged()
         }
     }
+
 }

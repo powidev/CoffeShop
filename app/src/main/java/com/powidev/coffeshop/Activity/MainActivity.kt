@@ -21,7 +21,7 @@ import java.util.TimerTask
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel = MainViewModel()
-    private lateinit var bannerUrls: List<String> // Inicializa la lista aquí
+    private lateinit var bannerUrls: List<String>
     private lateinit var timer: Timer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.loadBanner().observe(this) { banners ->
             if (banners != null && banners.isNotEmpty()) {
-                bannerUrls = banners.map { it.url } // Asigna las URLs aquí
+                bannerUrls = banners.map { it.url }
                 val adapter = BannerAdapter(bannerUrls)
                 binding.bannerViewPager.adapter = adapter
                 binding.progressBarBanner.visibility = View.GONE
@@ -102,11 +102,11 @@ class MainActivity : AppCompatActivity() {
             override fun run() {
                 handler.post(runnable)
             }
-        }, 3000, 3000) // Cada 3 segundos
+        }, 3000, 3000)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (::timer.isInitialized) timer.cancel() // Cancela el temporizador
+        if (::timer.isInitialized) timer.cancel()
     }
 }

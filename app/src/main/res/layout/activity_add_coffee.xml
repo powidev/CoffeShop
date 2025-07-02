@@ -1,75 +1,128 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/lightCream"
+    android:fillViewport="true">
 
-    <Spinner
-        android:id="@+id/spinnerCategory"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editTextTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Título del Café"
-        android:inputType="text"
-        android:padding="8dp" />
+        <!-- Botón de retroceso -->
+        <LinearLayout
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/rounded_back_btn"
+            android:padding="8dp">
 
-    <EditText
-        android:id="@+id/editTextExtra"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Información extra (opcional)"
-        android:inputType="text"
-        android:padding="8dp" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Back Icon"
+                android:src="@drawable/back" />
 
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Descripción del Café"
-        android:inputType="textMultiLine"
-        android:padding="8dp" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Volver"
+                android:textColor="@color/darkBrown"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextPrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Precio del Café"
-        android:inputType="numberDecimal"
-        android:padding="8dp" />
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:numStars="5"
-        android:rating="4.0"
-        android:stepSize="0.5" />
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Título del Café"
+            android:inputType="text"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext" />
 
-    <ImageView
-        android:id="@+id/imageViewSelected"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="Imagen seleccionada" />
+        <EditText
+            android:id="@+id/editTextExtra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Información extra (opcional)"
+            android:inputType="text"
+            android:layout_marginTop="8dp"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext" />
 
-    <Button
-        android:id="@+id/buttonSelectImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen" />
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción del Café"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="8dp"
+            android:minLines="3"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext" />
 
-    <Button
-        android:id="@+id/buttonAddCoffee"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Agregar Café"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/editTextPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Precio del Café"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="8dp"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:numStars="5"
+            android:rating="4.0"
+            android:stepSize="0.5" />
+
+        <ImageView
+            android:id="@+id/imageViewSelected"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Imagen seleccionada"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_image_bg" />
+
+        <Button
+            android:id="@+id/buttonSelectImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:backgroundTint="@color/green"
+            android:text="Seleccionar Imagen"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button" />
+
+        <Button
+            android:id="@+id/buttonAddCoffee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/blue"
+            android:text="Agregar Café"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button" />
+    </LinearLayout>
+</ScrollView>

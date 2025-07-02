@@ -4,15 +4,33 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#F0B45D</color>
     <color name="cream">#EFDEC9</color>
+    <color name="logocolor">#F5E6D0</color>
     <color name="lightCream">#FCF0E2</color>
     <color name="darkGrey">#4E4E4E</color>
     <color name="grey">#8D8D8D</color>
     <color name="darkBrown">#220C01</color>
     <color name="textPrimary">#000000</color>
     <color name="spinnerBackground"></color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#E57373</color>
+    <color name="yellow">#FFD54F</color>
+    <color name="lightBrown">#A1887F</color>
+    <color name="deepBrown">#5D4037</color>
     <color name="spinnerPopupBackground">#FFFFFF</color>
     <color name="bm">#bf8024</color>
+    <!-- Colores para el banner -->
+    <color name="gray_light">#FFEEEEEE</color>  <!-- Color de placeholder -->
+    <color name="red_error">#FFFF0000</color>    <!-- Color para icono de error -->
 
+    <!-- Colores para bordes redondeados (opcional) -->
+    <color name="banner_border">#FFD3D3D3</color> <!-- Gris claro para bordes -->
+
+    <!-- Si usas MaterialCardView para el contenedor -->
+    <color name="card_background">#FFFFFFFF</color> <!-- Fondo blanco -->
+
+    <!-- Colores para el efecto de sombra (opcional) -->
+    <color name="shadow_start">#1A000000</color>
+    <color name="shadow_end">#00000000</color>
     <!-- Añadido -->
     <color name="blue">#2196F3</color>
 </resources>

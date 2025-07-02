@@ -201,7 +201,57 @@ class MainRepository {
         return result
     }
 
-    // Método adicional para manejar imágenes
+    fun addToPopular(item: ItemsModel): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val ref = FirebaseDatabase.getInstance().getReference("Popular")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            val newIndex = snapshot.childrenCount.toInt()
+            ref.child(newIndex.toString()).setValue(item)
+                .addOnSuccessListener { result.value = true }
+                .addOnFailureListener { error ->
+                    Log.e("Repository", "Error al agregar a populares", error)
+                    result.value = false
+                }
+        }.addOnFailureListener { error ->
+            Log.e("Repository", "Error al obtener índice para populares", error)
+            result.value = false
+        }
+        return result
+    }
+
+    fun removeFromPopular(item: ItemsModel): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val ref = FirebaseDatabase.getInstance().getReference("Popular")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            val updatedList = mutableListOf<ItemsModel>()
+
+            // Buscar todos los items excepto el que queremos eliminar
+            for (child in snapshot.children) {
+                val value = child.getValue(ItemsModel::class.java)
+                if (value != null && value.title != item.title) {
+                    updatedList.add(value)
+                }
+            }
+
+            // Borrar todos y reescribir con índices consecutivos
+            ref.setValue(null).addOnSuccessListener {
+                for ((index, newItem) in updatedList.withIndex()) {
+                    ref.child(index.toString()).setValue(newItem)
+                }
+                result.value = true
+            }.addOnFailureListener {
+                result.value = false
+            }
+
+        }.addOnFailureListener {
+            result.value = false
+        }
+
+        return result
+    }
+
     fun uploadImage(imageUri: Uri, callback: (String?) -> Unit) {
         val imageName = "product_${System.currentTimeMillis()}.jpg"
         val imageRef = storageRef.child("product_images/$imageName")

@@ -42,6 +42,11 @@ class AddCoffeeActivity : AppCompatActivity() {
         initViews()
         loadCategories()
         setupListeners()
+
+        val backBtn = findViewById<LinearLayout>(R.id.backBtn)
+        backBtn.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initViews() {

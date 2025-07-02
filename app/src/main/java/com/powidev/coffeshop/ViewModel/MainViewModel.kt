@@ -25,4 +25,8 @@ class MainViewModel : ViewModel() {
     fun loadItems(categoryId: String): LiveData<MutableList<ItemsModel>> {
         return repository.loadItemsByCategory(categoryId)
     }
+
+    fun removeFromPopular(item: ItemsModel): LiveData<Boolean> {
+        return repository.removeFromPopular(item)
+    }
 }

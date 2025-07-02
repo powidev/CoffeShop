@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">CoffeShop</string>
+    <string name="app_name" translatable="false">Dulce Aroma</string>
     <string name="choice_your_nfavorite_coffee">Choice your\nFavorite Coffee</string>
     <string name="the_best_grain_the_finest_roast_nthe_powerfull_flavor">The best grain,the finest roast\nthe powerful flavor</string>
     <string name="get_started">Get Started</string>
@@ -72,4 +72,9 @@
     <string name="required">Required field</string>
     <string name="coming_soon">Coming Soon!</string>
     <string name="empty_cart">The cart is empty!</string>
+    <string name="categorias">Categorias</string>
+    <string name="agregar_caf">Agregar Café</string>
+    <string name="caf_s">Cafés</string>
+    <string name="home">Home</string>
+    <string name="populares">Populares</string>
 </resources>

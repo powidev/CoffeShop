@@ -11,6 +11,7 @@ import com.powidev.coffeshop.R
 
 class ManagerCategoryAdapter(
     private val categories: List<CategoryModel>,
+    private val onEdit: (CategoryModel) -> Unit,
     private val onDelete: (CategoryModel) -> Unit
 ) : RecyclerView.Adapter<ManagerCategoryAdapter.ViewHolder>() {
 
@@ -22,6 +23,7 @@ class ManagerCategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
         holder.bind(category)
+        holder.editButton.setOnClickListener { onEdit(category) }
         holder.deleteButton.setOnClickListener { onDelete(category) }
     }
 
@@ -29,6 +31,7 @@ class ManagerCategoryAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleText: TextView = itemView.findViewById(R.id.textCategoryTitle)
+        val editButton: ImageView = itemView.findViewById(R.id.imageEdit)
         val deleteButton: ImageView = itemView.findViewById(R.id.imageDelete)
 
         fun bind(category: CategoryModel) {

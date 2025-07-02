@@ -85,7 +85,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/category"
-                android:textColor="@color/black"
+                android:textColor="@color/textPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -135,7 +135,7 @@
 
                     android:layout_weight="1"
                     android:text="@string/popular_coffees"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
 
                     android:text="@string/see_all"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/textPrimary" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

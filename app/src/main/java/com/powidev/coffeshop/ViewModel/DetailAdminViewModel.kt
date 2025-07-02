@@ -19,4 +19,8 @@ class DetailAdminViewModel(private val repository: MainRepository) : ViewModel()
         return repository.deleteItemByTitle(title)
     }
 
+    fun addToPopular(item: ItemsModel): LiveData<Boolean> {
+        return repository.addToPopular(item)
+    }
+
 }

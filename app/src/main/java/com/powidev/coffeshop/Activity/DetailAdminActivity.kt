@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.registerForActivityResult
@@ -38,6 +39,8 @@ class DetailAdminActivity : AppCompatActivity() {
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
     private lateinit var changeImageFab: FloatingActionButton
+    private lateinit var ratingBar: RatingBar
+    private lateinit var addToPopularButton: Button
 
     private var currentItem: ItemsModel? = null
     private var selectedImageUri: Uri? = null
@@ -76,12 +79,22 @@ class DetailAdminActivity : AppCompatActivity() {
     private fun initViews() {
         productImage = findViewById(R.id.picMain)
         titleEditText = findViewById(R.id.titleTxt)
+        ratingBar = findViewById(R.id.ratingBar)
         priceEditText = findViewById(R.id.priceTxt)
         descriptionEditText = findViewById(R.id.descriptionTxt)
         saveButton = findViewById(R.id.button_save)
         editButton = findViewById(R.id.button_edit)
         deleteButton = findViewById(R.id.button_delete)
         changeImageFab = findViewById(R.id.fab_change_image)
+        addToPopularButton = findViewById(R.id.button_add_to_popular)
+        ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            Log.d("RatingBar", "Nuevo rating: $rating")
+        }
+
+        findViewById<View>(R.id.backIcon).setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun loadItemData() {
@@ -95,6 +108,7 @@ class DetailAdminActivity : AppCompatActivity() {
 
         currentItem?.let { item ->
             titleEditText.setText(item.title)
+            ratingBar.rating = item.rating.toFloat()
             priceEditText.setText(item.price.toString())
             descriptionEditText.setText(item.description)
 
@@ -104,7 +118,6 @@ class DetailAdminActivity : AppCompatActivity() {
                     .into(productImage)
             }
         }
-
         updateUIState()
     }
 
@@ -131,6 +144,19 @@ class DetailAdminActivity : AppCompatActivity() {
         deleteButton.setOnClickListener {
             showDeleteConfirmationDialog()
         }
+
+        addToPopularButton.setOnClickListener {
+            currentItem?.let { item ->
+                viewModel.addToPopular(item).observe(this) { success ->
+                    if (success) {
+                        Toast.makeText(this, "Agregado a populares", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Error al agregar a populares", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } ?: Toast.makeText(this, "Producto no encontrado", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun validateFields(): Boolean {
@@ -179,6 +205,7 @@ class DetailAdminActivity : AppCompatActivity() {
         currentItem?.let { original ->
             val updatedItem = original.copy(
                 title = titleEditText.text.toString(),
+                rating = ratingBar.rating.toDouble(),
                 price = priceEditText.text.toString().toDoubleOrNull() ?: 0.0,
                 description = descriptionEditText.text.toString(),
                 picUrl = newImageUrl?.let { listOf(it) } ?: original.picUrl
@@ -230,6 +257,7 @@ class DetailAdminActivity : AppCompatActivity() {
                     imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                         val newItem = ItemsModel(
                             title = titleEditText.text.toString(),
+                            rating = ratingBar.rating.toDouble(),
                             price = priceEditText.text.toString().toDouble(),
                             description = descriptionEditText.text.toString(),
                             picUrl = listOf(downloadUri.toString()),
@@ -284,9 +312,9 @@ class DetailAdminActivity : AppCompatActivity() {
         }
     }
 
-
     private fun enableEditing(enable: Boolean) {
         titleEditText.isEnabled = enable
+        ratingBar.isEnabled = enable
         priceEditText.isEnabled = enable
         descriptionEditText.isEnabled = enable
         changeImageFab.isEnabled = enable
@@ -303,7 +331,6 @@ class DetailAdminActivity : AppCompatActivity() {
     }
 
     private fun showLoading(show: Boolean) {
-        // Implementa tu lógica de carga aquí
         saveButton.isEnabled = !show
         editButton.isEnabled = !show
         deleteButton.isEnabled = !show
