@@ -71,7 +71,7 @@
                     tools:srcCompat="@tools:sample/backgrounds/scenic" />
             </androidx.cardview.widget.CardView>
 
-            <!-- Floating Button for Image Change -->
+            <!-- Botón flotante para editar imagen -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_change_image"
                 android:layout_width="wrap_content"
@@ -92,8 +92,6 @@
                 android:backgroundTint="@color/green"
                 android:text="Add to Popular"
                 android:textColor="#FFF" />
-
-            <!-- Botón flotante para editar imagen -->
 
             <!-- Card con campos -->
             <androidx.cardview.widget.CardView

@@ -55,6 +55,14 @@
     <string name="required">Campo requerido</string>
     <string name="coming_soon">Pronto!</string>
     <string name="empty_cart">El carrito está vacío!</string>
+    <string name="populares">Populares</string>
+    <string name="favorite">Favorito</string>
+    <string name="caf_s">Cafés</string>
+    <string name="categorias">Categorías</string>
+    <string name="add_coffee">Agregar Café</string>
+    <string name="agregar_caf">Agregar Café</string>
+    <string name="home">Hogar</string>
+    <string name="pr_ximamente">Muy pronto!</string>
     <string name="new_category_name">Nombre de la nueva categoría…</string>
     <string name="add_category">Agregar Categoría</string>
     <string name="coffee_title">Título del Café</string>
@@ -63,5 +71,4 @@
     <string name="coffee_price">Precio del Café</string>
     <string name="imagen_seleccionada">Imagen seleccionada</string>
     <string name="select_image">Seleccionar una imagen</string>
-    <string name="add_coffee">Agregar Café</string>
 </resources>

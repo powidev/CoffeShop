@@ -147,11 +147,17 @@ class DetailAdminActivity : AppCompatActivity() {
 
         addToPopularButton.setOnClickListener {
             currentItem?.let { item ->
-                viewModel.addToPopular(item).observe(this) { success ->
-                    if (success) {
-                        Toast.makeText(this, "Agregado a populares", Toast.LENGTH_SHORT).show()
+                viewModel.isProductInPopular(item).observe(this) { exists ->
+                    if (exists) {
+                        Toast.makeText(this, "Este producto ya está en populares", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Error al agregar a populares", Toast.LENGTH_SHORT).show()
+                        viewModel.addToPopular(item).observe(this) { success ->
+                            if (success) {
+                                Toast.makeText(this, "Agregado a populares", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this, "Error al agregar a populares", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             } ?: Toast.makeText(this, "Producto no encontrado", Toast.LENGTH_SHORT).show()

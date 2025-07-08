@@ -42,11 +42,14 @@ class MainActivity : AppCompatActivity() {
         }
         binding.profileBtn.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra("isAdmin", true) // Cambia a false si el usuario es cliente
+            intent.putExtra("isAdmin", true)
             startActivity(intent)
         }
         binding.orderBtn.setOnClickListener {
             startActivity(Intent(this, OrdersActivity::class.java))
+        }
+        binding.favoriteBtn.setOnClickListener {
+            startActivity(Intent(this, FavoritesActivity::class.java))
         }
     }
 

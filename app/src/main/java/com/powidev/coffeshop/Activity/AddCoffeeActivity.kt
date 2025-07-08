@@ -19,7 +19,7 @@ class AddCoffeeActivity : AppCompatActivity() {
     private lateinit var editTextTitle: EditText
     private lateinit var editTextDescription: EditText
     private lateinit var editTextPrice: EditText
-    private lateinit var editTextExtra: EditText // Campo extra
+    private lateinit var editTextExtra: EditText
     private lateinit var ratingBar: RatingBar
     private lateinit var imageViewSelected: ImageView
     private lateinit var buttonSelectImage: Button
@@ -147,13 +147,12 @@ class AddCoffeeActivity : AppCompatActivity() {
         }
     }
 
-    // Función para generar el siguiente ID faltante
     private fun generateNextId(currentIds: List<Int>): Int {
         for (i in currentIds.indices) {
             if (i != currentIds[i]) {
-                return i // Retorna el menor número faltante
+                return i
             }
         }
-        return currentIds.size // Si no falta ninguno, retorna el siguiente en la secuencia
+        return currentIds.size
     }
 }

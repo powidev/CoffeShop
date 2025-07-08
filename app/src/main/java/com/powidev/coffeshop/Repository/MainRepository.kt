@@ -18,7 +18,6 @@ import com.powidev.coffeshop.Domain.ItemsModel
 
 class MainRepository {
     private val firebaseDatabase= FirebaseDatabase.getInstance()
-    private val storageRef: StorageReference = FirebaseStorage.getInstance().reference
 
     fun loadBanner(): LiveData<MutableList<BannerModel>> {
         val listData = MutableLiveData<MutableList<BannerModel>>()
@@ -220,6 +219,27 @@ class MainRepository {
         return result
     }
 
+    fun isProductInPopular(item: ItemsModel): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        val ref = FirebaseDatabase.getInstance().getReference("Popular")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            var exists = false
+            for (child in snapshot.children) {
+                val existingItem = child.getValue(ItemsModel::class.java)
+                if (existingItem?.title == item.title) {
+                    exists = true
+                    break
+                }
+            }
+            result.value = exists
+        }.addOnFailureListener {
+            result.value = false
+        }
+
+        return result
+    }
+
     fun removeFromPopular(item: ItemsModel): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         val ref = FirebaseDatabase.getInstance().getReference("Popular")
@@ -250,22 +270,6 @@ class MainRepository {
         }
 
         return result
-    }
-
-    fun uploadImage(imageUri: Uri, callback: (String?) -> Unit) {
-        val imageName = "product_${System.currentTimeMillis()}.jpg"
-        val imageRef = storageRef.child("product_images/$imageName")
-
-        imageRef.putFile(imageUri)
-            .addOnSuccessListener {
-                imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    callback(uri.toString())
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Repository", "Error al subir imagen", e)
-                callback(null)
-            }
     }
 
 }

@@ -23,4 +23,8 @@ class DetailAdminViewModel(private val repository: MainRepository) : ViewModel()
         return repository.addToPopular(item)
     }
 
+    fun isProductInPopular(item: ItemsModel): LiveData<Boolean> {
+        return repository.isProductInPopular(item)
+    }
+
 }

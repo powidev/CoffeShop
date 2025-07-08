@@ -1,31 +1,39 @@
 package com.powidev.coffeshop.Activity
 
-import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.powidev.coffeshop.Domain.ItemsModel
 import com.powidev.coffeshop.Helper.ManagmentCart
 import com.powidev.coffeshop.R
 import com.powidev.coffeshop.databinding.ActivityDetailBinding
+import com.powidev.coffeshop.ViewModel.FavoriteViewModel
 
 class DetailActivity : AppCompatActivity() {
-    lateinit var binding: ActivityDetailBinding
+    private lateinit var binding: ActivityDetailBinding
     private lateinit var item: ItemsModel
-    private lateinit var  managmentCart: ManagmentCart
+    private lateinit var managmentCart: ManagmentCart
+    private lateinit var favoriteViewModel: FavoriteViewModel
+    private lateinit var uid: String
+    private var isFavorite = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding= ActivityDetailBinding.inflate(layoutInflater)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        managmentCart= ManagmentCart(this)
+        managmentCart = ManagmentCart(this)
+        favoriteViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
+        uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
         bundle()
         initSizeList()
+        setupFavoriteLogic()
     }
 
     private fun initSizeList() {
@@ -56,15 +64,14 @@ class DetailActivity : AppCompatActivity() {
                 .load(item.picUrl[0])
                 .into(binding.picMain)
 
-            titleTxt.text=item.title
-            descriptionTxt.text=item.description
-            priceTxt.text="$"+item.price
-            ratingTxt.text=item.rating.toString()
+            titleTxt.text = item.title
+            descriptionTxt.text = item.description
+            priceTxt.text = "$" + item.price
+            ratingTxt.text = item.rating.toString()
+            numberItemTxt.text = item.numberInCart.toString()
 
             addToCartBtn.setOnClickListener {
-                item.numberInCart=Integer.valueOf(
-                    numberItemTxt.text.toString()
-                )
+                item.numberInCart = numberItemTxt.text.toString().toInt()
                 managmentCart.insertItems(item)
             }
 
@@ -73,17 +80,53 @@ class DetailActivity : AppCompatActivity() {
             }
 
             plusCart.setOnClickListener {
-                numberItemTxt.text=(item.numberInCart+1).toString()
                 item.numberInCart++
+                numberItemTxt.text = item.numberInCart.toString()
             }
 
             minusBtn.setOnClickListener {
-                if(item.numberInCart>0){
-                    numberItemTxt.text=(item.numberInCart-1).toString()
+                if (item.numberInCart > 0) {
                     item.numberInCart--
+                    numberItemTxt.text = item.numberInCart.toString()
                 }
             }
         }
     }
 
+    private fun setupFavoriteLogic() {
+        favoriteViewModel.isInFavorites(item, uid).observe(this) { exists ->
+            isFavorite = exists
+            updateFavoriteIcon()
+        }
+
+        binding.favBtn.setOnClickListener {
+            if (isFavorite) {
+                favoriteViewModel.removeFromFavorites(item, uid).observe(this) { success ->
+                    if (success) {
+                        isFavorite = false
+                        updateFavoriteIcon()
+                        Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                favoriteViewModel.addToFavorites(item, uid).observe(this) { success ->
+                    if (success) {
+                        isFavorite = true
+                        updateFavoriteIcon()
+                        Toast.makeText(this, "Agregado a favoritos", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateFavoriteIcon() {
+        if (isFavorite) {
+            binding.favBtn.setImageResource(R.drawable.favorite_white)
+            binding.favBtn.setColorFilter(resources.getColor(R.color.red, theme))
+        } else {
+            binding.favBtn.setImageResource(R.drawable.favorite_white)
+            binding.favBtn.setColorFilter(resources.getColor(R.color.grey, theme))
+        }
+    }
 }
