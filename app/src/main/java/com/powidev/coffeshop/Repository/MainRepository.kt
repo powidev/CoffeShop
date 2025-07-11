@@ -60,6 +60,28 @@ class MainRepository {
         return listData
     }
 
+    fun loadNuevos(): LiveData<List<ItemsModel>> {
+        val data = MutableLiveData<List<ItemsModel>>()
+
+        FirebaseDatabase.getInstance().getReference("Items")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val items = snapshot.children.mapNotNull { it.getValue(ItemsModel::class.java) }
+
+                val nuevos = items
+                    .filter { it.createdAt != null }
+                    .sortedByDescending { it.createdAt }
+                    .take(5)
+
+                data.value = nuevos
+            }
+            .addOnFailureListener {
+                data.value = emptyList()
+            }
+
+        return data
+    }
+
     fun loadPopular():LiveData<MutableList<ItemsModel>>{
         val listData=MutableLiveData<MutableList<ItemsModel>>()
         val ref=firebaseDatabase.getReference("Popular")

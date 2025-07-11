@@ -51,6 +51,9 @@ class MainActivity : AppCompatActivity() {
         binding.favoriteBtn.setOnClickListener {
             startActivity(Intent(this, FavoritesActivity::class.java))
         }
+        binding.explorerBtn.setOnClickListener {
+            startActivity(Intent(this, ExplorerActivity::class.java))
+        }
     }
 
     private fun initBanner() {

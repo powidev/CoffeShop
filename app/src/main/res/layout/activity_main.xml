@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/lightCream"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.MainActivity">
@@ -85,7 +86,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/category"
-                android:textColor="@color/textPrimary"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -135,7 +136,7 @@
 
                     android:layout_weight="1"
                     android:text="@string/popular_coffees"
-                    android:textColor="@color/textPrimary"
+                    android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -144,7 +145,7 @@
                     android:layout_height="wrap_content"
 
                     android:text="@string/see_all"
-                    android:textColor="@color/textPrimary" />
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,7 +200,7 @@
                 android:layout_gravity="center_vertical">
 
                 <LinearLayout
-                    android:id="@+id/searchBtn"
+                    android:id="@+id/explorerBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"

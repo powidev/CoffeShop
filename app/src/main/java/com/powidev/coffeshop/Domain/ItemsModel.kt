@@ -12,7 +12,8 @@ data class ItemsModel(
     // Campos no editables (mantienen su valor original)
     var numberInCart: Int = 0,
     var extra: String = "",
-    var categoryId: String = ""
+    var categoryId: String = "",
+    var createdAt: Long? = null
 ) : Serializable {
     // Método para actualización parcial
     fun getUpdatableFields(): Map<String, Any?> = mapOf(

@@ -129,7 +129,8 @@ class AddCoffeeActivity : AppCompatActivity() {
                 price = editTextPrice.text.toString().toDouble(),
                 rating = ratingBar.rating.toDouble(),
                 picUrl = listOf(imageUrl),
-                categoryId = categories[spinnerCategory.selectedItemPosition].id.toString()
+                categoryId = categories[spinnerCategory.selectedItemPosition].id.toString(),
+                createdAt = System.currentTimeMillis()
             )
 
             // Guardar el nuevo elemento con el ID calculado
